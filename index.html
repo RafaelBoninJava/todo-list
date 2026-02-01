@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>To-Do List</h1>
+      <p class="subtitle">Simples, rápido e com salvamento automático.</p>
+    </header>
+
+    <section class="card">
+      <form id="taskForm" class="form">
+        <input id="taskInput" type="text" placeholder="Digite uma tarefa..." autocomplete="off" />
+        <button type="submit">Adicionar</button>
+      </form>
+
+      <div class="toolbar">
+        <input id="searchInput" type="text" placeholder="Buscar..." />
+        <select id="filterSelect">
+          <option value="all">Todas</option>
+          <option value="active">Pendentes</option>
+          <option value="done">Concluídas</option>
+        </select>
+        <button id="clearDoneBtn" type="button" class="secondary">Limpar concluídas</button>
+      </div>
+
+      <ul id="taskList" class="list"></ul>
+
+      <footer class="footer">
+        <span id="counter">0 tarefas</span>
+      </footer>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

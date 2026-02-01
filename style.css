@@ -1,0 +1,128 @@
+:root {
+  --bg: #0b1220;
+  --card: #121b2e;
+  --text: #e7eaf0;
+  --muted: #a9b1c6;
+  --accent: #4da3ff;
+  --danger: #ff5c7a;
+  --border: rgba(255,255,255,0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(900px 500px at 20% 10%, rgba(77,163,255,0.18), transparent 55%),
+              radial-gradient(800px 500px at 80% 20%, rgba(255,92,122,0.12), transparent 55%),
+              var(--bg);
+  color: var(--text);
+}
+
+.container {
+  max-width: 720px;
+  margin: 48px auto;
+  padding: 0 16px;
+}
+
+.header h1 {
+  margin: 0 0 6px;
+  font-size: 34px;
+}
+
+.subtitle {
+  margin: 0 0 18px;
+  color: var(--muted);
+}
+
+.card {
+  background: rgba(18,27,46,0.75);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.form {
+  display: flex;
+  gap: 10px;
+}
+
+.form input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  outline: none;
+}
+
+.form button {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(77,163,255,0.35);
+  background: rgba(77,163,255,0.15);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: 1fr 160px 180px;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.toolbar input,
+.toolbar select,
+.toolbar button {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+
+.item.done .text {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.item button {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,92,122,0.3);
+  background: rgba(255,92,122,0.15);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.footer {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .toolbar {
+    grid-template-columns: 1fr;
+  }
+}
+
