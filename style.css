@@ -194,5 +194,29 @@ body {
   outline: 2px dashed rgba(77,163,255,0.45);
   outline-offset: 2px;
 }
+/* Tema: claro/escuro */
+body.light {
+  --bg: #f4f7ff;
+  --card: #ffffff;
+  --text: #0b1220;
+  --muted: #4b5565;
+  --accent: #2563eb;
+  --danger: #e11d48;
+  --border: rgba(15, 23, 42, 0.12);
+}
+
+.theme-btn{
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.theme-btn:hover{
+  border-color: rgba(77,163,255,0.45);
+}
 
 
