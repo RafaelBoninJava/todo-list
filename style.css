@@ -152,5 +152,47 @@ body {
   color: var(--text);
   outline: none;
 }
+.actions{
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit{
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(77,163,255,0.35);
+  background: rgba(77,163,255,0.12);
+  color: var(--text);
+  cursor: pointer;
+}
+.btn-edit:hover{
+  background: rgba(77,163,255,0.18);
+}
+
+.edit-input{
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(77,163,255,0.35);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  outline: none;
+}
+
+/* Drag & Drop */
+.drag-handle{
+  cursor: grab;
+  user-select: none;
+  opacity: 0.75;
+  font-size: 18px;
+  line-height: 1;
+}
+.dragging{
+  opacity: 0.5;
+}
+.drag-over{
+  outline: 2px dashed rgba(77,163,255,0.45);
+  outline-offset: 2px;
+}
 
 
