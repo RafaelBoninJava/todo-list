@@ -92,7 +92,8 @@ body {
 
 .item {
   display: grid;
-  grid-template-columns: 28px 1fr auto;
+  grid-template-columns: 22px 28px 1fr auto; /* handle | checkbox | texto | actions */
+  align-items: center;
   gap: 10px;
   padding: 12px;
   border-radius: 14px;
