@@ -10,43 +10,116 @@ const clearDoneBtn = document.getElementById("clearDoneBtn");
 
 let tasks = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-// salvar no localStorage
 function save() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 }
 
-// renderizar lista
-function render() {
-  list.innerHTML = "";
+function escapeHtml(str) {
+  return str
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
-  let filtered = tasks.filter(task => {
+function getVisibleTasks() {
+  let filtered = tasks.filter((task) => {
     if (filter.value === "done") return task.done;
     if (filter.value === "active") return !task.done;
     return true;
   });
 
-  filtered = filtered.filter(task =>
-    task.text.toLowerCase().includes(search.value.toLowerCase())
-  );
+  const q = search.value.trim().toLowerCase();
+  if (q) {
+    filtered = filtered.filter((task) => task.text.toLowerCase().includes(q));
+  }
 
-  filtered.forEach(task => {
+  return filtered;
+}
+
+function updateCounter() {
+  const total = tasks.length;
+  const done = tasks.filter((t) => t.done).length;
+  const pending = total - done;
+
+  counter.textContent = `${total} tarefa(s) • ${pending} pendente(s) • ${done} concluída(s)`;
+}
+
+function startEdit(task, textEl) {
+  // evita abrir editor se já estiver editando
+  if (textEl.querySelector("input")) return;
+
+  const current = task.text;
+  const editInput = document.createElement("input");
+  editInput.className = "edit-input";
+  editInput.type = "text";
+  editInput.value = current;
+
+  // substitui o texto por um input
+  textEl.innerHTML = "";
+  textEl.appendChild(editInput);
+  editInput.focus();
+  editInput.select();
+
+  const finish = (commit) => {
+    const newValue = editInput.value.trim();
+
+    if (commit) {
+      if (!newValue) {
+        // se apagar tudo, volta pro texto antigo
+        textEl.textContent = task.text;
+        return;
+      }
+      task.text = newValue;
+      save();
+    }
+    textEl.textContent = task.text;
+    render();
+  };
+
+  editInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") finish(true);
+    if (e.key === "Escape") finish(false);
+  });
+
+  editInput.addEventListener("blur", () => finish(true));
+}
+
+function render() {
+  list.innerHTML = "";
+  const visible = getVisibleTasks();
+
+  visible.forEach((task) => {
     const li = document.createElement("li");
     li.className = "item" + (task.done ? " done" : "");
 
     li.innerHTML = `
-      <input type="checkbox" ${task.done ? "checked" : ""}>
-      <span class="text">${task.text}</span>
-      <button>Excluir</button>
+      <input class="checkbox" type="checkbox" ${task.done ? "checked" : ""} aria-label="Concluir tarefa">
+      <span class="text">${escapeHtml(task.text)}</span>
+      <div class="actions">
+        <button class="btn-edit" type="button" title="Editar">Editar</button>
+        <button class="btn-delete" type="button" title="Excluir">Excluir</button>
+      </div>
     `;
 
-    li.querySelector("input").addEventListener("change", () => {
+    // eventos
+    li.querySelector(".checkbox").addEventListener("change", () => {
       task.done = !task.done;
       save();
       render();
     });
 
-    li.querySelector("button").addEventListener("click", () => {
-      tasks = tasks.filter(t => t !== task);
+    const textEl = li.querySelector(".text");
+    textEl.addEventListener("dblclick", () => startEdit(task, textEl));
+
+    li.querySelector(".btn-edit").addEventListener("click", () => startEdit(task, textEl));
+
+    li.querySelector(".btn-delete").addEventListener("click", () => {
+      const ok = confirm(`Excluir a tarefa:\n\n"${task.text}" ?`);
+      if (!ok) return;
+
+      tasks = tasks.filter((t) => t !== task);
       save();
       render();
     });
@@ -54,29 +127,32 @@ function render() {
     list.appendChild(li);
   });
 
-  counter.textContent = `${tasks.length} tarefa(s)`;
+  updateCounter();
 }
 
 // adicionar tarefa
-form.addEventListener("submit", e => {
+form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  if (input.value.trim() === "") return;
+  const text = input.value.trim();
+  if (!text) return;
 
   tasks.unshift({
-    text: input.value.trim(),
-    done: false
+    text,
+    done: false,
   });
 
   input.value = "";
   save();
   render();
+  input.focus();
 });
 
 filter.addEventListener("change", render);
 search.addEventListener("input", render);
+
 clearDoneBtn.addEventListener("click", () => {
-  tasks = tasks.filter(task => !task.done);
+  tasks = tasks.filter((task) => !task.done);
   save();
   render();
 });
