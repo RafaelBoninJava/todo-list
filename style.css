@@ -219,5 +219,63 @@ body.light {
 .theme-btn:hover{
   border-color: rgba(77,163,255,0.45);
 }
+/* Form: novos campos */
+.form select,
+.form input[type="date"]{
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  outline: none;
+}
+
+/* Badge de prioridade + due date */
+.meta{
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  font-size: 12px;
+}
+
+.badge.high{
+  border-color: rgba(225, 29, 72, 0.35);
+  background: rgba(225, 29, 72, 0.12);
+}
+.badge.medium{
+  border-color: rgba(77,163,255,0.35);
+  background: rgba(77,163,255,0.12);
+}
+.badge.low{
+  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.12);
+}
+/* Corrigir cor do texto das opções (select) */
+select {
+  color: #000;              /* texto preto quando aberto */
+  background-color: #fff;   /* fundo branco */
+}
+
+/* opções dentro do select */
+select option {
+  color: #000;              /* texto preto */
+  background-color: #fff;   /* fundo branco */
+}
+
 
 

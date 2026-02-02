@@ -19,9 +19,19 @@
 
     <section class="card">
       <form id="taskForm" class="form">
-        <input id="taskInput" type="text" placeholder="Digite uma tarefa..." autocomplete="off" />
-        <button type="submit">Adicionar</button>
-      </form>
+  <input id="taskInput" type="text" placeholder="Digite uma tarefa..." autocomplete="off" />
+
+  <select id="priorityInput" title="Prioridade">
+    <option value="medium" selected>Média</option>
+    <option value="high">Alta</option>
+    <option value="low">Baixa</option>
+  </select>
+
+  <input id="dueInput" type="date" title="Data limite (opcional)" />
+
+  <button type="submit">Adicionar</button>
+</form>
+
 
       <div class="toolbar">
         <input id="searchInput" type="text" placeholder="Buscar..." />

@@ -1,5 +1,4 @@
 const STORAGE_KEY = "todo_list_tasks";
-
 const form = document.getElementById("taskForm");
 const input = document.getElementById("taskInput");
 const list = document.getElementById("taskList");
@@ -7,6 +6,8 @@ const counter = document.getElementById("counter");
 const filter = document.getElementById("filterSelect");
 const search = document.getElementById("searchInput");
 const clearDoneBtn = document.getElementById("clearDoneBtn");
+const priorityInput = document.getElementById("priorityInput");
+const dueInput = document.getElementById("dueInput");
 
 // ===== Tema (light/dark) =====
 const THEME_KEY = "todo_theme";
@@ -161,16 +162,49 @@ function render() {
 
     // 🔥 torna arrastável
     li.draggable = true;
+    const pr = task.priority || "medium";
+
+const prLabel =
+  pr === "high" ? "Alta" :
+  pr === "low" ? "Baixa" :
+  "Média";
+
+const due = task.dueDate
+  ? task.dueDate.split("-").reverse().join("/")
+  : null;
+  const isOverdue = (() => {
+  if (task.done) return false;
+  if (!task.dueDate) return false;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const dueDate = new Date(task.dueDate + "T00:00:00");
+
+  return dueDate < today;
+})();
 
     li.innerHTML = `
-      <span class="drag-handle" title="Arraste para reordenar" aria-label="Arraste para reordenar">⠿</span>
-      <input class="checkbox" type="checkbox" ${task.done ? "checked" : ""} aria-label="Concluir tarefa">
-      <span class="text">${escapeHtml(task.text)}</span>
-      <div class="actions">
-        <button class="btn-edit" type="button" title="Editar">Editar</button>
-        <button class="btn-delete" type="button" title="Excluir">Excluir</button>
-      </div>
-    `;
+  <span class="drag-handle" title="Arraste para reordenar">⠿</span>
+
+  <input class="checkbox" type="checkbox" ${task.done ? "checked" : ""}>
+
+  <div>
+    <span class="text">${escapeHtml(task.text)}</span>
+
+    <div class="meta">
+      <span class="badge ${pr}">⚑ ${prLabel}</span>
+      ${due ? `<span class="badge">📅 ${due}</span>` : ""}
+      ${isOverdue ? `<span class="badge overdue">⏰ Atrasada</span>` : ""}
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-edit" type="button">Editar</button>
+    <button class="btn-delete" type="button">Excluir</button>
+  </div>
+`;
+
 
     // checkbox done
     li.querySelector(".checkbox").addEventListener("change", () => {
@@ -241,15 +275,18 @@ form.addEventListener("submit", (e) => {
   if (!text) return;
 
   tasks.unshift({
-    id: makeId(),
-    text,
-    done: false,
-  });
+  id: makeId(),
+  text,
+  done: false,
+  priority: priorityInput?.value || "medium",
+  dueDate: dueInput?.value || null, // formato YYYY-MM-DD
+  createdAt: new Date().toISOString()
+});
+
 
   input.value = "";
-  save();
-  render();
-  input.focus();
+  if (priorityInput) priorityInput.value = "medium";
+if (dueInput) dueInput.value = "";
 });
 
 filter.addEventListener("change", render);
