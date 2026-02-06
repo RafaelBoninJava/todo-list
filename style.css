@@ -67,11 +67,40 @@ body {
   cursor: pointer;
 }
 
-.toolbar {
-  display: grid;
-  grid-template-columns: 1fr 160px 180px;
+.toolbar{
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin: 14px 0;
+  align-items: center;
+}
+#searchInput{
+  flex: 1 1 220px;
+}
+
+#filterSelect,
+#sortSelect{
+  flex: 0 0 160px;
+}
+
+#clearDoneBtn{
+  flex: 0 0 180px;
+  white-space: nowrap;
+}
+
+/* cada item com tamanho decente */
+#searchInput{
+  flex: 1 1 220px;
+}
+
+#filterSelect,
+#sortSelect{
+  flex: 0 0 160px;
+}
+
+#clearDoneBtn{
+  flex: 0 0 180px;
+  white-space: nowrap;
 }
 
 .toolbar input,
@@ -275,6 +304,23 @@ select {
 select option {
   color: #000;              /* texto preto */
   background-color: #fff;   /* fundo branco */
+}
+.badge.overdue{
+  border-color: rgba(225, 29, 72, 0.45);
+  background: rgba(225, 29, 72, 0.18);
+}
+/* Select fechado (no tema escuro) */
+.toolbar select,
+.form select{
+  color: var(--text);
+  background: rgba(255,255,255,0.04);
+}
+
+/* Dropdown aberto (opções) com letra preta */
+.toolbar select option,
+.form select option{
+  color: #000;
+  background: #fff;
 }
 
 

@@ -8,6 +8,21 @@ const search = document.getElementById("searchInput");
 const clearDoneBtn = document.getElementById("clearDoneBtn");
 const priorityInput = document.getElementById("priorityInput");
 const dueInput = document.getElementById("dueInput");
+const sortSelect = document.getElementById("sortSelect");
+const SORT_KEY = "todo_sort";
+
+function initSort() {
+  const saved = localStorage.getItem(SORT_KEY) || "manual";
+  if (sortSelect) sortSelect.value = saved;
+}
+initSort();
+
+if (sortSelect) {
+  sortSelect.addEventListener("change", () => {
+    localStorage.setItem(SORT_KEY, sortSelect.value);
+    render();
+  });
+}
 
 // ===== Tema (light/dark) =====
 const THEME_KEY = "todo_theme";
@@ -81,6 +96,35 @@ function getVisibleTasks() {
   const q = search.value.trim().toLowerCase();
   if (q) {
     filtered = filtered.filter((task) => task.text.toLowerCase().includes(q));
+  }
+  // ===== Ordenação =====
+  const sortMode = sortSelect?.value || localStorage.getItem(SORT_KEY) || "manual";
+
+  const priorityWeight = (p) => (p === "high" ? 0 : p === "medium" ? 1 : 2);
+
+  if (sortMode === "priority") {
+    filtered.sort((a, b) => {
+      return priorityWeight(a.priority) - priorityWeight(b.priority);
+    });
+  }
+
+  if (sortMode === "dueDate") {
+    filtered.sort((a, b) => {
+      const aHas = !!a.dueDate;
+      const bHas = !!b.dueDate;
+      if (aHas && bHas) return a.dueDate.localeCompare(b.dueDate);
+      if (aHas && !bHas) return -1; // quem tem data vem primeiro
+      if (!aHas && bHas) return 1;
+      return 0;
+    });
+  }
+
+  if (sortMode === "createdAt") {
+    filtered.sort((a, b) => {
+      const aC = a.createdAt || "";
+      const bC = b.createdAt || "";
+      return bC.localeCompare(aC); // mais recentes primeiro
+    });
   }
 
   return filtered;
